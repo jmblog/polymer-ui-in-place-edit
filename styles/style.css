@@ -1,0 +1,16 @@
+body {
+  padding: 30px 50px;
+  font-size: 18px;
+  color: #333;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.polymer-logo {
+  float: right;
+}
+
+.demo-section {
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  padding: 20px;
+}

@@ -1,0 +1,18 @@
+{
+  "name": "polymer-ui-in-place-edit",
+  "version": "0.0.0",
+  "authors": [
+    "Yoshihide Jimbo <yjimbo@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.2.4"
+  }
+}

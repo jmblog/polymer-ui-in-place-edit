@@ -1,0 +1,106 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+<polymer-element name="polymer-ui-in-place-edit">
+
+  <!-- shadow DOM -->
+  <template>
+    <style>
+      .in-place-edit__input {
+        display: none;
+        border: 0;
+        margin: 0;
+        padding: 0 0 3px 0;
+        background: transparent;
+        width: 90%;
+        font: inherit;
+      }
+
+      .in-place-edit__input:focus {
+        outline: 0;
+        border-bottom: 1px dashed rgb(184, 184, 184);
+      }
+
+      .in-place-edit__text {
+        position: relative;
+        display: inline-block;
+      }
+
+      .in-place-edit__text::before {
+        content: "\f040";
+        font-family: FontAwesome;
+        font-size: .7em;
+        color: $icon-color;
+        position: absolute;
+        top: .5em;
+        right: -1.3em;
+        color: #aaa;
+        opacity: 0;
+        transition: opacity 0.1s ease-in;
+      }
+
+      .in-place-edit__text:hover::before {
+        opacity: 1;
+      }
+    </style>
+    <span>
+      <input id="inPlaceEditInput" class="in-place-edit__input" type="text" value="{{text}}" on-blur="{{blurred}}">
+      <span id="inPlaceEditText" class="in-place-edit__text" on-click="{{startEditing}}">{{text}}</span>
+    </span>
+  </template>
+
+  <script>
+    Polymer('polymer-ui-in-place-edit', {
+
+      ready: function() {
+        this.text = this.innerHTML;
+        this.input_elem = this.$.inPlaceEditInput;
+        this.text_elem  = this.$.inPlaceEditText;
+        this.editing = false;
+        this.undo = null;
+      },
+
+      startEditing: function() {
+        var _scope = this;
+
+        _scope.input_elem.style.display = "inline-block";
+        _scope.text_elem.style.display = "none";
+        this.undo = _scope.text.slice(0);
+        _scope.editing = true;
+        _scope.input_elem.select();
+        _scope.input_elem.addEventListener('keydown', function(ev) {
+          if (ev.keyCode == 13) { // enter
+            _scope.commit();
+          } else if (ev.keyCode == 27) { // ESC
+            _scope.discard();
+          }
+        });
+      },
+
+      commit: function() {
+        this.finish();
+      },
+
+      discard: function() {
+        this.text = this.undo;
+        this.finish();
+      },
+
+      finish: function() {
+        this.editing = false;
+        if (this.text == "") {
+          this.text = '(undefined)';
+        }
+        this.input_elem.style.display = "none";
+        this.text_elem.style.display = "inline-block";
+        console.log('finish');
+      },
+
+      blurred: function ( ) {
+        if (this.editing) {
+          this.commit();
+        }
+      }
+    });
+  </script>
+</polymer-element>
